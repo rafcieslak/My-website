@@ -2,10 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Public Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cieślak Family Birthdays</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
+        .birthday-card { background: white; padding: 20px; margin: 10px auto; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 400px; }
+        .days-left { font-weight: bold; color: #e63946; }
+    </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This site is officially public.</p>
+
+    <h1>Cieślak Family Birthdays</h1>
+    <div id="birthday-list"></div>
+
+    <script>
+        const children = [
+            { name: "Jan Cieślak", dob: "2023-03-17" },
+            { name: "Jakub Cieślak", dob: "2020-05-03" },
+            { name: "Julia Cieślak", dob: "2017-06-11" },
+            { name: "Pola Cieślak", dob: "2012-10-06" }
+        ];
+
+        function getDaysUntil(dob) {
+            const now = new Date();
+            const birthDate = new Date(dob);
+            let nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+            if (now > nextBirthday) {
+                nextBirthday.setFullYear(now.getFullYear() + 1);
+            }
+
+            const diff = nextBirthday - now;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        const listDiv = document.getElementById('birthday-list');
+        
+        children.forEach(child => {
+            const days = getDaysUntil(child.dob);
+            const card = document.createElement('div');
+            card.className = 'birthday-card';
+            card.innerHTML = `
+                <h3>${child.name}</h3>
+                <p>Birthday: ${child.dob}</p>
+                <p class="days-left">${days} days until next birthday!</p>
+            `;
+            listDiv.appendChild(card);
+        });
+    </script>
+
 </body>
 </html>
