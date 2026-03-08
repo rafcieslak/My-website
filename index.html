@@ -21,7 +21,9 @@
             { name: "Jan Cieślak", dob: "2023-03-17" },
             { name: "Jakub Cieślak", dob: "2020-05-03" },
             { name: "Julia Cieślak", dob: "2017-06-11" },
-            { name: "Pola Cieślak", dob: "2012-10-06" }
+            { name: "Pola Cieślak", dob: "2012-10-06" },
+            { name: "Anna Cieślak", dob: "1986-02-06" },
+            { name: "Rafał Cieślak", dob: "1984-12-20" }
         ];
 
         function getBirthdayInfo(dob) {
@@ -29,10 +31,8 @@
             const birthDate = new Date(dob);
             let nextYear = now.getFullYear();
             
-            // Create a date object for the birthday in the current year
             let nextBirthday = new Date(nextYear, birthDate.getMonth(), birthDate.getDate());
 
-            // If the birthday has already passed this year, look at next year
             if (now > nextBirthday) {
                 nextYear++;
                 nextBirthday.setFullYear(nextYear);
@@ -41,7 +41,6 @@
             const diff = nextBirthday - now;
             const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
             
-            // Calculate the age they will be turning
             const ageTurning = nextYear - birthDate.getFullYear();
 
             return { daysLeft, ageTurning };
