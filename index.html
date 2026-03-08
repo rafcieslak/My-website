@@ -8,6 +8,7 @@
         body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
         .birthday-card { background: white; padding: 20px; margin: 10px auto; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); max-width: 400px; }
         .days-left { font-weight: bold; color: #e63946; }
+        .turning-age { color: #457b9d; font-style: italic; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -23,29 +24,40 @@
             { name: "Pola Cieślak", dob: "2012-10-06" }
         ];
 
-        function getDaysUntil(dob) {
+        function getBirthdayInfo(dob) {
             const now = new Date();
             const birthDate = new Date(dob);
-            let nextBirthday = new Date(now.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+            let nextYear = now.getFullYear();
+            
+            // Create a date object for the birthday in the current year
+            let nextBirthday = new Date(nextYear, birthDate.getMonth(), birthDate.getDate());
 
+            // If the birthday has already passed this year, look at next year
             if (now > nextBirthday) {
-                nextBirthday.setFullYear(now.getFullYear() + 1);
+                nextYear++;
+                nextBirthday.setFullYear(nextYear);
             }
 
             const diff = nextBirthday - now;
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            
+            // Calculate the age they will be turning
+            const ageTurning = nextYear - birthDate.getFullYear();
+
+            return { daysLeft, ageTurning };
         }
 
         const listDiv = document.getElementById('birthday-list');
         
         children.forEach(child => {
-            const days = getDaysUntil(child.dob);
+            const info = getBirthdayInfo(child.dob);
             const card = document.createElement('div');
             card.className = 'birthday-card';
             card.innerHTML = `
                 <h3>${child.name}</h3>
                 <p>Birthday: ${child.dob}</p>
-                <p class="days-left">${days} days until next birthday!</p>
+                <p class="turning-age">Will be turning <strong>${info.ageTurning}</strong> years old!</p>
+                <p class="days-left">${info.daysLeft} days until next birthday!</p>
             `;
             listDiv.appendChild(card);
         });
